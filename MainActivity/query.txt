@@ -1,0 +1,32 @@
+<select id="fnList_card_return" parameterType="m_sDTO"  resultType="m_sDTO">
+	SELECT *
+	  FROM CARD_RETURN_INFO
+	 WHERE ORDER_PK = #{store_pk}
+	   AND RESULT_CODE = '0000'
+	   AND RESULT_MSG = ''	
+	 <![CDATA[	
+	   AND (#{start_date} < DATE_FORMAT(STR_TO_DATE(CONCAT("20"
+	        , LEFT(APPROVAL_DATE, 10), "00"), '%Y%m%d %H%i%s')
+	        ,'%Y-%m-%d %H:%i:%s')
+	   AND DATE_FORMAT(STR_TO_DATE(CONCAT("20"
+	        , LEFT(APPROVAL_DATE, 10), "00"), '%Y%m%d %H%i%s')
+	        ,'%Y-%m-%d %H:%i:%s') < #{end_date})
+	   ]]>
+</select>	
+
+<insert id="fnInsert_card_return_info" parameterType="m_sDTO">
+	INSERT INTO `card_return_info`
+	(`ORDER_PK`, `STORE_PK`, `TRAN_NO`, `TRAN_TYPE`, `CARD_NUM`, `CARD_NAME`
+	, `TOTAL_AMOUNT`, `TAX`, `TIP`, `INSTALLMENT`, `RESULT_CODE`, `RESULT_MSG`
+	, `APPROVAL_NUM`, `ORG_APPROVAL_NUM`, `APPROVAL_DATE`, `ACQUIRER_CODE`, `ACQUIRER_NAME`
+	, `MERCHANT_NUM`, `SHOP_TID`, `SHOP_BIZ_NUM`, `SHOP_NAME`, `SHOP_OWNER`, `SHOP_ADDRESS`
+	, `SHOP_TEL`, `ADD_FIELD`, `TRAN_SERIALNO`, `APPCALL_TRAN_NO`, `RESPONSE_TYPE`
+	, `TPK`, `TMK`)
+	 VALUES
+	(#{order_num}, #{customer_code}, #{tran_no}, #{tran_type}, #{card_num}, #{card_name}
+	, #{total_amount}, #{tax}, #{tip}, #{installment}, #{result_code}, #{result_msg}
+	, #{approval_num}, #{org_approval_num}, #{approval_date}, #{acquirer_code}
+	, #{acquirer_name}, #{merchant_num}, #{shop_tid}, #{shop_biz_num}
+	, #{shop_name}, #{shop_owner}, #{shop_address}, #{shop_tel}, #{add_field}, #{tran_serialno}
+	, #{appcall_tran_no}, #{response_type}, #{tpk}, #{tmk})
+</insert>
